@@ -194,6 +194,7 @@ I'm sorry, but I don't have access to personal information.
 ## Example Execution - Describing a given workflow
 
 ```
+>> Descibe this workflow:
 digraph G {
 
   // start
@@ -238,6 +239,7 @@ Overall, this flow chart helps guide the decision-making process for loan approv
 ```
 
 ```
+>> Descibe this workflow:
 digraph G {
 
   // start
