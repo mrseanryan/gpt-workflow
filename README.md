@@ -177,20 +177,6 @@ digraph G {
 }
 ```
 
-## Example Execution - Handling irrelevant prompts
-
-```
----
->> what is 2 + 5 divided by 10 ?
-I'm sorry, but I can only assist with questions related to creating a flow chart.
----
->> Who won the battle of Agincourt, and why was it fought?
-I'm sorry, but I can only assist with questions related to creating a flow chart.
----
->> What is my favourite color?
-I'm sorry, but I don't have access to personal information.
-```
-
 ## Example Execution - Describing a given workflow
 
 ```
@@ -281,6 +267,20 @@ The process starts at the "Start" node and then moves to the "Has feathers?" dec
 If the animal does not have feathers, the flow moves to the "Has fins?" decision node. If the animal has fins, the flow reaches the "Dolphin" node, indicating that the animal is a dolphin. However, if the animal does not have fins, the flow reaches the "Bear" node, indicating that the animal is a bear.
 
 Overall, this flow chart helps classify animals based on their characteristics, specifically whether they have feathers, can fly, or have fins
+```
+
+## Example Execution - Handling irrelevant prompts
+
+```
+---
+>> what is 2 + 5 divided by 10 ?
+I'm sorry, but I can only assist with questions related to creating a flow chart.
+---
+>> Who won the battle of Agincourt, and why was it fought?
+I'm sorry, but I can only assist with questions related to creating a flow chart.
+---
+>> What is my favourite color?
+I'm sorry, but I don't have access to personal information.
 ```
 
 ## Dependencies
