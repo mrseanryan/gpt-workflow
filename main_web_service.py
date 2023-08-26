@@ -3,7 +3,7 @@ from random import randint
 from urllib.parse import urlparse, parse_qs
 import threading, socket
 
-from config__database_schema_creator import EXPERT_COMMANDS
+from prompts__dot_graph_creator import EXPERT_COMMANDS
 import core
 import config
 import config_web

@@ -1,4 +1,4 @@
-from config__database_schema_creator import EXPERT_COMMANDS
+from prompts__dot_graph_creator import EXPERT_COMMANDS
 import core
 
 command_messages = core.create_command_messages(EXPERT_COMMANDS)
