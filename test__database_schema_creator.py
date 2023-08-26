@@ -6,7 +6,7 @@ def test():
 
     tests = [
         {
-            "name": "Simple workflow to decide the animal type",
+            "name": "Simple workflow to model a tree of decisions",
             "prompts": [
                 "Create a flow that makes a series of decisions about whether to approve a mortgage application",
                 "Create a flow that makes a series of decisions about whether to recommend a job interview candidate.",
@@ -32,6 +32,7 @@ def test():
         }
     ]
 
+    prompt_id = 1
     for test in tests:
         previous_messages = []
         print(f"[[[TEST {test['name']}]]]")
@@ -39,5 +40,6 @@ def test():
             print("---")
             print(f">> {user_prompt}")
             # should route to the right 'expert' chain!
-            rsp = core.execute_prompt(user_prompt, previous_messages, command_messages)
+            rsp = core.execute_prompt(user_prompt, previous_messages, command_messages, prompt_id)
             print(rsp)
+            prompt_id += 1

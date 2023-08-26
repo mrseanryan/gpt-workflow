@@ -16,6 +16,8 @@ chain = core.create_command_messages(EXPERT_COMMANDS)
 # TODO add sessions like gpt-rpg
 previous_messages = []
 
+prompt_id = 1
+
 class MyServer(BaseHTTPRequestHandler):
     def do_GET(self):
         routes = {
@@ -41,7 +43,8 @@ class MyServer(BaseHTTPRequestHandler):
     def bot(self):
         user_prompt = self.parse_query_param("p")
         command_messages = core.create_command_messages(EXPERT_COMMANDS)
-        rsp = core.execute_prompt(user_prompt, previous_messages, command_messages)
+        rsp = core.execute_prompt(user_prompt, previous_messages, command_messages, prompt_id)
+        prompt_id += 1
         return rsp
 
     def parse_path(self):

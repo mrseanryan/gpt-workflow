@@ -15,12 +15,14 @@ output_capabilities()
 initial_prompt = "What is the name of your workflow? >>"
 user_prompt = input(initial_prompt)
 
+prompt_id = 1
 input_prompt = "(To exit, just press ENTER) >"
 while(user_prompt != None and len(user_prompt) > 0):
     print("=== === === ===")
     print(f">> {user_prompt}")
     # should route to the right 'expert'!
-    rsp = core.execute_prompt(user_prompt, previous_messages, command_messages)
+    rsp = core.execute_prompt(user_prompt, previous_messages, command_messages, prompt_id)
     print("=== RESPONSE ===")
     print(rsp)
     user_prompt = input(input_prompt)
+    prompt_id += 1
