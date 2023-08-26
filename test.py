@@ -1,0 +1,3 @@
+import test__database_schema_creator
+
+test__database_schema_creator.test()
