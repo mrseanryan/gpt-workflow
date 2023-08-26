@@ -278,7 +278,6 @@ source ~/.zprofile
 or
 
 `python test.py`
-`
 
 ## Related Tools
 
