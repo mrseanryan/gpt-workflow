@@ -1,0 +1,65 @@
+digraph G {
+    graph [
+        label = "Describing/Explaining a Workflow via DOT format"
+        labelloc = t
+
+        //dpi = 200
+        ranksep=0.65
+        nodesep=0.40
+        rankdir=TB
+
+        len=0
+    ]
+
+  subgraph cluster_0 {
+    label = "User";
+
+    User_In
+    User_Out
+  }
+
+  subgraph cluster_1 {
+    color=blue
+    label = "gpt-workflow";
+
+    core
+    rsp_parser
+    
+    dot_creator_prompt -> system_prompts
+    dot_describer_prompt -> system_prompts
+  }
+
+  subgraph cluster_2 {
+    label = "LLM";
+
+    LLM_In
+    LLM_Out
+  }
+
+  subgraph cluster_3 {
+    label = "Application";
+
+    Application_In
+    Application_Out
+    DOT_Serializer
+    
+    Workflow -> DOT_Serializer[xlabel="<serialized>"]
+  }
+
+    User_In -> Application_In [label="Describe this workflow"]
+    
+    system_prompts -> core [xlabel="[system prompts]"]
+
+    Application_In -> DOT_Serializer [label="Serialize workflow to DOT"]
+
+    DOT_Serializer -> core [label="Workflow (Graphviz DOT)"]
+    
+    core -> LLM_In [label="req[Graphviz DOT][system prompts]"]
+    
+    LLM_In -> LLM_Out
+    
+    LLM_Out -> rsp_parser [label="rsp[summary]"]
+
+    rsp_parser -> Application_Out
+    Application_Out -> User_Out [label="[summary]"]
+}

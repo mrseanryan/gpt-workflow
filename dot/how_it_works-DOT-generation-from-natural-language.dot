@@ -1,0 +1,73 @@
+digraph G {
+    graph [
+        label = "Workflow Generation via DOT format"
+        labelloc = t
+
+        //dpi = 200
+        ranksep=0.65
+        nodesep=0.40
+        rankdir=TB
+
+        len=0
+    ]
+
+  subgraph cluster_0 {
+    label = "User";
+
+    User_In
+    User_Out
+  }
+
+  subgraph cluster_1 {
+    label = "Application";
+
+    Application_In
+    Application_Out
+    DOT_Parser
+    Workflow
+  }
+
+  subgraph cluster_2 {
+    color=blue
+    label = "gpt-workflow";
+        
+    prompts
+    core
+    service_dot_parser
+
+  }
+
+  subgraph cluster_3 {
+    label = "LLM";
+
+    LLM_In
+    LLM_Out
+  }
+
+  subgraph cluster_4 {
+    label = "Disk";
+
+    Image_File
+    DOT_File
+  }
+
+    User_In -> Application_In[label="natural language description of a workflow"]
+    
+    prompts -> core [xlabel="system prompts: DOT creator + DOT describer"]
+
+    Application_In -> core [label="natural language description of a workflow"]
+    
+    core -> LLM_In [xlabel="req[Description][format: Graphviz DOT]"]
+    
+    LLM_Out -> service_dot_parser [taillabel="rsp[Workflow in DOT format][summary]"]
+    
+    LLM_In -> LLM_Out
+    
+    service_dot_parser -> DOT_Parser [label="[Workflow in DOT format]"]
+    service_dot_parser -> Application_Out [label="[summary]"]
+    DOT_Parser -> Workflow [label="<create/update>"]
+    
+    Application_Out -> User_Out [label="[summary]"]
+    service_dot_parser -> Image_File [label="[DOT]"]
+    service_dot_parser -> DOT_File [label="[DOT]"]
+}
