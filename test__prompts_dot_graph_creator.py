@@ -48,6 +48,17 @@ def test():
         }
     ]
 
+    storage_first_test = {
+        "name": "Workflow reads orders from storage and writes back the total",
+        "prompts": [
+            "Create a Workflow that reads a list of Orders for a Customer from storage, and then iterates over the orders, calculating the total amount. Write the total back to storage.",
+        ]
+    }
+
+    storage_tests = [
+        storage_first_test
+    ]
+
     describe_tests = [
         {
             "name": "Describe the given workflow",
@@ -138,11 +149,12 @@ digraph G {
         }
     ]
 
-    tests = decisions_tests + list_tests + describe_tests + irrelevant_tests
+    tests = decisions_tests + list_tests + storage_tests + describe_tests + irrelevant_tests
 
     # for debugging:
     # tests = [decisions_tests_first] # xxx
     # tests = [list_advanced_test] # xxx
+    # tests = [storage_first_test] # xxx
 
     prompt_id = 1
     for test in tests:

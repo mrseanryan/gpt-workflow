@@ -34,7 +34,7 @@ digraph G {
 ```
 
 IMPORTANT: Nodes of the flow digraph MUST be named to match this whitelist:
-- start, decision_<identifier>, end_<identifier>, create_list_enumerator_<identifier>, has_list_enumerator_more_items_<identifier>, get_next_item_from_enumerator_<identifier>, variable_<identifier>, parameter_<identifier>, call_flow_<identifier>, other_<identifier>
+- start, decision_<identifier>, end_<identifier>, while_<identifier>, read_items_from_storage_<identifier>, write_items_to_storage_<identifier>, create_list_enumerator_<identifier>, has_list_enumerator_more_items_<identifier>, get_next_item_from_enumerator_<identifier>, variable_<identifier>, parameter_<identifier>, call_flow_<identifier>, other_<identifier>
 
 IMPORTANT: Only output valid DOT format as used by the graphviz tool.
 """
