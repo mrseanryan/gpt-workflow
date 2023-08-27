@@ -1,4 +1,4 @@
-from prompts__dot_graph_creator import EXPERT_COMMANDS, GetPromptToDescribeWorkflow
+from prompts_dot_graph_creator import EXPERT_COMMANDS, GetPromptToDescribeWorkflow
 import core
 
 def test():
@@ -19,6 +19,13 @@ def test():
                 "Create a flow that takes a list and adds an item of the same type",
                 "Create a flow that takes two lists and concatenates them",
                 "Create a flow that takes a list and an object. Call another flow to get a boolean result. If the boolean is true, then add the item to the list."
+            ]
+        },
+        {
+            "name": "Workflow that iterates over items in a list",
+            "prompts": [
+                "Create a flow that iterates over items in a list, performing an action on each item",
+                "Create a flow that iterates over Job Applications in a list. For each Job Application, call another flow that checks if the application should proceed to interview stage",
             ]
         },
         {
