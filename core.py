@@ -14,7 +14,7 @@ def create_command_messages(expert_commands):
 
 def process_response(rsp, prompt_id):
     if service_dot_parser.is_dot_response(rsp):
-        return service_dot_parser.parse(rsp, prompt_id)
+        return service_dot_parser.parse_dot_and_return_human(rsp, prompt_id)
     return rsp
 
 def execute_prompt(user_prompt, previous_messages, command_messages, prompt_id):

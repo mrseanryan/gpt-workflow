@@ -24,12 +24,18 @@ def write_dot_to_file(dot_string, prompt_id):
 def is_dot_response(rsp):
     return DOT_GRAPH_START in rsp
 
-def parse(rsp, prompt_id):
+def parse_dot_and_return_human(rsp, prompt_id):
     parts = rsp.split(DOT_GRAPH_START)
+    human_output = parts[0].replace(DOT_SECTION_DELIMITER, "").strip()
     dot_string = DOT_GRAPH_START + parts[1]
     if DOT_SECTION_DELIMITER in dot_string:
-        dot_string = dot_string.split(DOT_SECTION_DELIMITER)[0]
+        parts_after_dot = dot_string.split(DOT_SECTION_DELIMITER)
+        dot_string = parts_after_dot[0]
+        human_output += config.END_LINE + config.END_LINE.join(parts_after_dot[1:])
+    print(f"  == BEGIN DOT ==")
+    print(dot_string)
+    print(f"  == END DOT ==")
     write_dot_to_file(dot_string, prompt_id)
     generate_png_from_dot(dot_string, prompt_id)
 
-    return dot_string
+    return human_output
