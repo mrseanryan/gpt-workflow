@@ -17,7 +17,7 @@ def test():
         {
             "name": "Simple workflow to model a tree of decisions",
             "prompts": [
-                "Create a flow that makes a series of decisions about whether to approve a mortgage application. The criteria are: good credit score, income at least 50000 USD, employed at least 2 years, can make a down payment of at least 20%, has no criminal record in last 5 years.",
+                "Create a flow that makes a series of decisions about whether to approve a mortgage application. The criteria are: good credit score, income at least 100000 USD, employed at least 3 years, can make a down payment of at least 10%, has no criminal record in last 5 years.",
                 "Create a flow that makes a series of decisions about whether to recommend a job interview candidate.",
                 "Create a flow that makes a series of decisions about an animal, to decide what kind of animal is it",
             ]
