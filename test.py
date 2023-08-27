@@ -1,3 +1,3 @@
-import test__database_schema_creator
+import test__prompts_dot_graph_creator
 
-test__database_schema_creator.test()
+test__prompts_dot_graph_creator.test()
