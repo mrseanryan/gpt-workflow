@@ -4,16 +4,15 @@ import core
 def test():
     command_messages = core.create_command_messages(EXPERT_COMMANDS)
 
-    decisions_tests_first = [
-        {
-            "name": "Simple workflow to model a tree of decisions",
-            "prompts": [
-                "Create a flow that makes a series of decisions about whether to approve a mortgage application"
-            ]
-        }
-    ]
+    decisions_tests_first = {
+        "name": "Simple workflow to model a tree of decisions",
+        "prompts": [
+            "Create a flow that makes a series of decisions about whether to approve a mortgage application"
+        ]
+    }
 
     decisions_tests = [
+        decisions_tests_first,
         {
             "name": "Simple workflow to model a tree of decisions",
             "prompts": [
@@ -24,7 +23,15 @@ def test():
         }
     ]
 
+    list_advanced_test = {
+        "name": "Workflow that iterates conditionally over items in a list",
+        "prompts": [
+            "Create a flow that iterates over Job Applications in a list. For each Job Application, call another flow that checks if the application should proceed to interview stage",
+        ]
+    }
+
     list_tests = [
+        list_advanced_test,
         {
             "name": "Simple workflow adding an item to a list",
             "prompts": [
@@ -36,8 +43,7 @@ def test():
         {
             "name": "Workflow that iterates over items in a list",
             "prompts": [
-                "Create a flow that iterates over items in a list, performing an action on each item",
-                "Create a flow that iterates over Job Applications in a list. For each Job Application, call another flow that checks if the application should proceed to interview stage",
+                "Create a flow that iterates over items in a list, performing an action on each item"
             ]
         }
     ]
@@ -132,10 +138,11 @@ digraph G {
         }
     ]
 
-    tests = decisions_tests_first + decisions_tests + list_tests + describe_tests + irrelevant_tests
+    tests = decisions_tests + list_tests + describe_tests + irrelevant_tests
 
     # for debugging:
-    # tests = decisions_tests_first # xxx
+    # tests = [decisions_tests_first] # xxx
+    # tests = [list_advanced_test] # xxx
 
     prompt_id = 1
     for test in tests:
