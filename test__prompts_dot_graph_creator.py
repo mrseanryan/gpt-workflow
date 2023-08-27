@@ -4,15 +4,27 @@ import core
 def test():
     command_messages = core.create_command_messages(EXPERT_COMMANDS)
 
-    tests = [
+    decisions_tests_first = [
         {
             "name": "Simple workflow to model a tree of decisions",
             "prompts": [
-                "Create a flow that makes a series of decisions about whether to approve a mortgage application",
+                "Create a flow that makes a series of decisions about whether to approve a mortgage application"
+            ]
+        }
+    ]
+
+    decisions_tests = [
+        {
+            "name": "Simple workflow to model a tree of decisions",
+            "prompts": [
+                "Create a flow that makes a series of decisions about whether to approve a mortgage application. The criteria are: good credit score, income at least 50000 USD, employed at least 2 years, can make a down payment of at least 20%, has no criminal record in last 5 years.",
                 "Create a flow that makes a series of decisions about whether to recommend a job interview candidate.",
                 "Create a flow that makes a series of decisions about an animal, to decide what kind of animal is it",
             ]
-        },
+        }
+    ]
+
+    list_tests = [
         {
             "name": "Simple workflow adding an item to a list",
             "prompts": [
@@ -27,7 +39,10 @@ def test():
                 "Create a flow that iterates over items in a list, performing an action on each item",
                 "Create a flow that iterates over Job Applications in a list. For each Job Application, call another flow that checks if the application should proceed to interview stage",
             ]
-        },
+        }
+    ]
+
+    describe_tests = [
         {
             "name": "Describe the given workflow",
             "prompts": [
@@ -102,7 +117,10 @@ digraph G {
 }
                 """)
             ]
-        },
+        }
+    ]
+
+    irrelevant_tests = [
         {
             "name": "Irrelevant prompts",
             "prompts": [
@@ -113,6 +131,11 @@ digraph G {
            ]
         }
     ]
+
+    tests = decisions_tests_first + decisions_tests + list_tests + describe_tests + irrelevant_tests
+
+    # for debugging:
+    # tests = decisions_tests_first # xxx
 
     prompt_id = 1
     for test in tests:

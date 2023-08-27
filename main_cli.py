@@ -1,4 +1,4 @@
-from prompts__dot_graph_creator import EXPERT_COMMANDS
+from prompts_dot_graph_creator import EXPERT_COMMANDS
 import core
 
 command_messages = core.create_command_messages(EXPERT_COMMANDS)
