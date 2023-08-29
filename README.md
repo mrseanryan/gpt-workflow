@@ -386,6 +386,10 @@ or
 
 `python test.py`
 
+## Training (still WIP)
+
+See [Training README](training/training-data-generator/README.md) about training a custom LLM for gpt-workflow.
+
 ## Related Tools
 
 [graphviz online editor](https://dreampuf.github.io/GraphvizOnline)
