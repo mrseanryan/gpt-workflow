@@ -1,3 +1,4 @@
+using System.Text;
 using Visitor;
 
 namespace Builder;
@@ -28,6 +29,41 @@ public class DotBuilder
 
     public string Build()
     {
-        return "xxx";
+        var sb = new StringBuilder();
+        sb.AppendLine("digraph G {");
+
+        foreach(var node in nodes)
+            sb.AppendLine($"  {GetNodeAsDot(node)}[shape={GetShape(node)}, label=\"{node.Identifier}\" ]");
+
+        foreach(var edge in edges)
+        {
+            var edgeLabel = "";
+            if (!string.IsNullOrEmpty(edge.Label))
+            {
+                edgeLabel = $" [label=\"{edge.Label}\"]";
+            }
+            sb.AppendLine($"  {GetNodeAsDot(edge.Start)} -> {GetNodeAsDot(edge.End)}{edgeLabel};");
+        }
+
+        sb.AppendLine("}");
+
+        return sb.ToString();
+    }
+
+    string GetNodeAsDot(Node node) => $"{node.Kind}_{node.Identifier.Replace(" ", "_")}";
+
+    string GetShape(Node node)
+    {
+        switch(node.Kind)
+        {
+            case NodeKind.Decision:
+                return "Mdiamond";
+            case NodeKind.End:
+                return "rectangle";
+            case NodeKind.Start:
+                return "ellipse";
+            default:
+                return "Msquare";
+        }
     }
 }
