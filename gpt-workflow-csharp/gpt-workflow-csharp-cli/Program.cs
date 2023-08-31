@@ -4,6 +4,8 @@ using System.Text;
 using Builder;
 using Visitor;
 
+args = args.Where(a => !string.IsNullOrEmpty(a)).ToArray();
+
 switch (args.Length)
 {
     case 1:
