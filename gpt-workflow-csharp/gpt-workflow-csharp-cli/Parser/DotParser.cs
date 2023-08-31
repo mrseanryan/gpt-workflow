@@ -24,13 +24,32 @@ class DotVisitor : SyntaxVisitor
         this.visitor = visitor;
     }
 
-    // TODO xxx also parse Label[] as that can have nice text
+    // Assumption: only Nodes will have labels
+    // TODO: support Edges with labels, if needed
+    Node? previousNode = null;
 
     public override bool VisitNodeIdentifierSyntax(NodeIdentifierSyntax nodeIdentifier, VisitKind visitKind)
     {
         var identifier = IdentifierFrom(nodeIdentifier.IdentifierToken);
 
-        visitor.VisitNode(new Node(NodeKindFrom(nodeIdentifier.IdentifierToken.ToString()), identifier));
+        var node = new Node(NodeKindFrom(nodeIdentifier.IdentifierToken.ToString()), identifier);
+        visitor.VisitNode(node);
+
+        if (node.Kind != NodeKind.Comment)
+            previousNode = node;
+
+        return true;
+    }
+
+    public override bool VisitAttributeSyntax(AttributeSyntax attribute, VisitKind visitKind)
+    {
+        if (previousNode != null && attribute.NameToken.ToString().Trim() == "label")
+        {
+            var label = attribute.ValueToken.StringValue;
+            if (!string.IsNullOrEmpty(label))
+                visitor.VisitNodeLabel(previousNode, label);
+        }
+
         return true;
     }
 

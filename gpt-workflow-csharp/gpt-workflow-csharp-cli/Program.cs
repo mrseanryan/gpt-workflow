@@ -24,6 +24,7 @@ switch (args.Length)
 
             var gptWorkflowClient = new Client.GptWorkflowClient(Config.Host, Config.Port);
             var rsp = await gptWorkflowClient.DescribeDot(dot);
+            Console.WriteLine($"-- Generated Description --");
             Console.WriteLine(rsp);
             return 0;
         }
@@ -43,8 +44,11 @@ switch (args.Length)
             var description = args[1];
             var gptWorkflowClient = new Client.GptWorkflowClient(Config.Host, Config.Port);
             var rsp = await gptWorkflowClient.GenerateDot(description);
+            Console.WriteLine($"-- Generated Description --");
             Console.WriteLine(rsp.description);
+            Console.WriteLine($"-- Generated DOT --");
             Console.WriteLine(rsp.dot);
+            Console.WriteLine($"-- Parsed DOT --");
             ParseAndDumpDot(rsp.dot);
             return 0;
         }

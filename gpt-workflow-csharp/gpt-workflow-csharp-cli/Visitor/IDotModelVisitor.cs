@@ -4,6 +4,7 @@ public interface IDotModelVisitor
 {
     void VisitNode(Node node);
     void VisitEdge(Edge edge);
+    void VisitNodeLabel(Node node, string label);
 }
 
 // Matches the whitelist in the prompt sent to LLM

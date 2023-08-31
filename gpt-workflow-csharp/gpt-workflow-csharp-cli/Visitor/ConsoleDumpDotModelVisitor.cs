@@ -16,5 +16,10 @@ public class ConsoleDumpDotModelVisitor : DeDuplicatingDotModelVisitor
         Console.WriteLine(ToString(node));
     }
 
+    protected override void SetLabelForNode(Node node, string label)
+    {
+        Console.WriteLine($"// node '{ToString(node)}' has label '{label}'");
+    }
+
     string ToString(Node node) => $"{node.Kind}[{node.Identifier}]";
 }
