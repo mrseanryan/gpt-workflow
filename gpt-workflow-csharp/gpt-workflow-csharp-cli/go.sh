@@ -1,1 +1,1 @@
-dotnet run $1 $2 $3 $4
+dotnet run $1 "$2"

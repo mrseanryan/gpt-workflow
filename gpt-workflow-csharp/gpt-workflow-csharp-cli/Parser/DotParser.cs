@@ -24,6 +24,8 @@ class DotVisitor : SyntaxVisitor
         this.visitor = visitor;
     }
 
+    // TODO xxx also parse Label[] as that can have nice text
+
     public override bool VisitNodeIdentifierSyntax(NodeIdentifierSyntax nodeIdentifier, VisitKind visitKind)
     {
         var identifier = IdentifierFrom(nodeIdentifier.IdentifierToken);

@@ -11,7 +11,18 @@ switch (args.Length)
         var cmd = args[0];
         if (cmd == "create-example-dot")
         {
-            CreateExampleDot();
+            var dot = CreateExampleDot();
+            Console.WriteLine(dot);
+            return 0;
+        }
+        else if (cmd == "send-example-dot-to-describe")
+        {
+            var dot = CreateExampleDot();
+            Console.WriteLine(dot);
+
+            var gptWorkflowClient = new Client.GptWorkflowClient(Config.Host, Config.Port);
+            var rsp = await gptWorkflowClient.DescribeDot(dot);
+            Console.WriteLine(rsp);
             return 0;
         }
         else ShowUsage();
@@ -25,6 +36,16 @@ switch (args.Length)
             ParseAndDumpDotFile(args[1]);
             return 0;
         }
+        else if (cmd == "generate-dot-and-parse")
+        {
+            var description = args[1];
+            var gptWorkflowClient = new Client.GptWorkflowClient(Config.Host, Config.Port);
+            var rsp = await gptWorkflowClient.GenerateDot(description);
+            Console.WriteLine(rsp.description);
+            Console.WriteLine(rsp.dot);
+            ParseAndDumpDot(rsp.dot);
+            return 0;
+        }
         else ShowUsage();
         return 6662;
     }
@@ -35,7 +56,7 @@ switch (args.Length)
     }
 }
 
-void CreateExampleDot()
+string CreateExampleDot()
 {
     var builder = new DotBuilder();
     var start = builder.AddNode(NodeKind.Start);
@@ -56,7 +77,8 @@ void CreateExampleDot()
     builder.AddEdge(decideSkills, end_recommend, "true");
     builder.AddEdge(decideSkills, end_not_recommend, "false");
 
-    Console.WriteLine(builder.Build());
+    var dot = builder.Build();
+    return dot;
 }
 
 void ShowUsage()
@@ -64,6 +86,8 @@ void ShowUsage()
     var processName = Process.GetCurrentProcess().ProcessName;
     Console.WriteLine($"USAGE: {processName} parse <path to DOT file>");
     Console.WriteLine($"USAGE: {processName} create-example-dot");
+    Console.WriteLine($"USAGE: {processName} generate-dot-and-parse <description>");
+    Console.WriteLine($"USAGE: {processName} send-example-dot-to-describe");
 }
 
 void ParseAndDumpDotFile(string pathToDotFile)
@@ -71,6 +95,11 @@ void ParseAndDumpDotFile(string pathToDotFile)
     Console.WriteLine($"Parsing DOT file {pathToDotFile}");
 
     var dot = File.ReadAllText(pathToDotFile, Encoding.UTF8);
+    ParseAndDumpDot(dot);
+}
+
+void ParseAndDumpDot(string dot)
+{
     var parser = new Parser.DotParser();
     parser.Parse(dot, new ConsoleDumpDotModelVisitor());
 }

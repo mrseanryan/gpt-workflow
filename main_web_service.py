@@ -125,8 +125,8 @@ def start_multi_threaded():
 
     print(f"Server started at http://{config_web.HOSTNAME}:{config_web.PORT} - {config_web.WEB_SERVER_THREADS} threads")
     print("Please set the 'p' query parameter to be the user's prompt.")
-    print(f"- generate DOT example: http://localhost:8083/generate-dot?p={escaped_create_dot}")
-    print(f"- describe DOT example: http://localhost:8083/describe-dot?p={escaped_dot}");
+    print(f"- generate DOT example: http://{config_web.HOSTNAME}:{config_web.PORT}/generate-dot?p={escaped_create_dot}")
+    print(f"- describe DOT example: http://{config_web.HOSTNAME}:{config_web.PORT}/describe-dot?p={escaped_dot}");
     print("[press any key to stop]")
     [Thread(i) for i in range(config_web.WEB_SERVER_THREADS)]
     input("Press ENTER to kill server")
