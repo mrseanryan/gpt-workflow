@@ -45,12 +45,18 @@ If the user asked for a description or summary of the DOT format flow chart then
 - use clear natural language, in a concise, friendly tone.
 """
 
+def getExpertCommandToCreateDot():
+    return Command('create_dot_workflow', create_dot_flowchart__expert_template, "Good for answering questions about creating a workflow in DOT notation")
+
+def getExpertCommandToDescribeDot():
+    return Command('describe_dot_workflow', describe_dot_flowchart__expert_template, "Good for describing a workflow given in DOT notation, summarizing its activity and its general purpose")
+
 # Each expert is a prompt that knows how to handle one type of user input
 EXPERT_COMMANDS = [
-    Command('describe_dot_workflow', describe_dot_flowchart__expert_template, "Good for describing a workflow given in DOT notation, summarizing its activity and its general purpose"),
+    getExpertCommandToDescribeDot(),
     # Placing this last, so that its IMPORTANT message about whitelist is not ignored (LLMs tend to ignore content in middle)
     # An approach like LangChain's MULTI_PROMPT_ROUTER_TEMPLATE would avoid this problem.
-    Command('create_dot_workflow', create_dot_flowchart__expert_template, "Good for answering questions about creating a workflow in DOT notation"),
+    getExpertCommandToCreateDot(),
 ]
 
 def GetPromptToDescribeWorkflow(dotText):

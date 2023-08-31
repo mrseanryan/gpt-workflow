@@ -38,4 +38,7 @@ def parse_dot_and_return_human(rsp, prompt_id):
     write_dot_to_file(dot_string, prompt_id)
     generate_png_from_dot(dot_string, prompt_id)
 
-    return human_output
+    return {
+        "human_output": human_output,
+        "dot": dot_string
+    }

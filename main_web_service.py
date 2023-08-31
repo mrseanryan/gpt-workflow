@@ -1,14 +1,12 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from random import randint
 from urllib.parse import urlparse, parse_qs
+import urllib
 import threading, socket
 
-from prompts_dot_graph_creator import EXPERT_COMMANDS
+from prompts_dot_graph_creator import EXPERT_COMMANDS, GetPromptToDescribeWorkflow, getExpertCommandToCreateDot, getExpertCommandToDescribeDot
 import core
 import config
 import config_web
-
-chain = core.create_command_messages(EXPERT_COMMANDS)
 
 # Python web server with cookie-based session
 # based on https://davidgorski.ca/posts/sessions/
@@ -21,7 +19,8 @@ prompt_id = 1
 class MyServer(BaseHTTPRequestHandler):
     def do_GET(self):
         routes = {
-            "/":        self.bot
+            "/generate-dot":        self.bot_generate_dot,
+            "/describe-dot":        self.bot_describe_dot,
         }
         try:
             response = 200
@@ -40,12 +39,22 @@ class MyServer(BaseHTTPRequestHandler):
         self.write(content)
         return
 
-    def bot(self):
+    def bot_describe_dot(self):
+        global prompt_id
         user_prompt = self.parse_query_param("p")
-        command_messages = core.create_command_messages(EXPERT_COMMANDS)
-        rsp = core.execute_prompt(user_prompt, previous_messages, command_messages, prompt_id)
+        user_prompt_wrapped = GetPromptToDescribeWorkflow(user_prompt)
+        command_messages = core.create_command_messages([getExpertCommandToDescribeDot()])
+        rsp = core.execute_prompt(user_prompt_wrapped, previous_messages, command_messages, prompt_id)
         prompt_id += 1
         return rsp
+
+    def bot_generate_dot(self):
+        global prompt_id
+        user_prompt = self.parse_query_param("p")
+        command_messages = core.create_command_messages([getExpertCommandToCreateDot()])
+        rsp = core.execute_prompt(user_prompt, previous_messages, command_messages, prompt_id)
+        prompt_id += 1
+        return rsp["human_output"] + "\n\n======\n\n" + rsp["dot"]
 
     def parse_path(self):
         return urlparse(self.path).path
@@ -75,6 +84,9 @@ def start_single_threaded():
         pass
     webServer.server_close()
     print("Server stopped.")
+
+def quotify(text):
+    return urllib.parse.quote(text)
 
 def start_multi_threaded():
     # Multi-threaded server, else performance is terrible
@@ -108,9 +120,13 @@ def start_multi_threaded():
                 pass
             httpd.server_close()
 
+    escaped_create_dot = quotify("Create a flow that makes a series of decisions about whether to approve a mortgage application")
+    escaped_dot = quotify('digraph G { Start_Start_1[shape=ellipse, label="Start_1" ];  Decision_Experience[shape=Mdiamond, label="Experience" ];  Decision_Education[shape=Mdiamond, label="Education" ];  Decision_Skills[shape=Mdiamond, label="Skills" ];  End_Recommend[shape=rectangle, label="Recommend" ];  End_Not_Recommend[shape=rectangle, label="Not_Recommend" ];  Start_Start_1 -> Decision_Experience;  Decision_Experience -> Decision_Education [label="true"];  Decision_Experience -> End_Not_Recommend [label="false"];  Decision_Education -> Decision_Skills [label="true"];  Decision_Education -> End_Not_Recommend [label="false"];  Decision_Skills -> End_Recommend [label="true"];  Decision_Skills -> End_Not_Recommend [label="false"];}")}')
+
     print(f"Server started at http://{config_web.HOSTNAME}:{config_web.PORT} - {config_web.WEB_SERVER_THREADS} threads")
     print("Please set the 'p' query parameter to be the user's prompt.")
-    print("example: http://localhost:8083/?p=I%20need%20a%20make%20a%20Car%20Parts%20application")
+    print(f"- generate DOT example: http://localhost:8083/generate-dot?p={escaped_create_dot}")
+    print(f"- describe DOT example: http://localhost:8083/describe-dot?p={escaped_dot}");
     print("[press any key to stop]")
     [Thread(i) for i in range(config_web.WEB_SERVER_THREADS)]
     input("Press ENTER to kill server")

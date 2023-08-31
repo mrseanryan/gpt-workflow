@@ -33,7 +33,7 @@ public class DotBuilder
         sb.AppendLine("digraph G {");
 
         foreach(var node in nodes)
-            sb.AppendLine($"  {GetNodeAsDot(node)}[shape={GetShape(node)}, label=\"{node.Identifier}\" ]");
+            sb.AppendLine($"  {GetNodeAsDot(node)}[shape={GetShape(node)}, label=\"{node.Identifier}\" ];");
 
         foreach(var edge in edges)
         {
