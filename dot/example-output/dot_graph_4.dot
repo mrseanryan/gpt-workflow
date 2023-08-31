@@ -1,0 +1,47 @@
+digraph G {
+
+  // start
+  start [shape=ellipse, label="Start"];
+  start -> decision_has_feathers;
+
+  // decision_has_feathers
+  decision_has_feathers [shape=Mdiamond, label="Has feathers?"];
+  decision_has_feathers -> decision_can_fly;
+  decision_has_feathers -> decision_has_fins;
+
+  // decision_can_fly
+  decision_can_fly [shape=Mdiamond, label="Can fly?"];
+  decision_can_fly -> end_Bird;
+  decision_can_fly -> decision_lays_eggs;
+
+  // decision_has_fins
+  decision_has_fins [shape=Mdiamond, label="Has fins?"];
+  decision_has_fins -> end_Fish;
+  decision_has_fins -> decision_has_legs;
+
+  // decision_lays_eggs
+  decision_lays_eggs [shape=Mdiamond, label="Lays eggs?"];
+  decision_lays_eggs -> end_Reptile;
+  decision_lays_eggs -> decision_has_legs;
+
+  // decision_has_legs
+  decision_has_legs [shape=Mdiamond, label="Has legs?"];
+  decision_has_legs -> end_Mammal;
+  decision_has_legs -> end_Amphibian;
+
+  // end_Bird
+  end_Bird [shape=ellipse, label="Bird"];
+  
+  // end_Fish
+  end_Fish [shape=ellipse, label="Fish"];
+
+  // end_Reptile
+  end_Reptile [shape=ellipse, label="Reptile"];
+
+  // end_Mammal
+  end_Mammal [shape=ellipse, label="Mammal"];
+
+  // end_Amphibian
+  end_Amphibian [shape=ellipse, label="Amphibian"];
+
+}

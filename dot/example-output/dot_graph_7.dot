@@ -1,0 +1,58 @@
+digraph G {
+
+  // start
+  start -> read_items_from_storage_list1;
+  
+  // read_items_from_storage_list1
+  read_items_from_storage_list1 -> create_list_enumerator_list1;
+  
+  // create_list_enumerator_list1
+  create_list_enumerator_list1 -> has_list_enumerator_more_items_list1;
+  
+  // has_list_enumerator_more_items_list1
+  has_list_enumerator_more_items_list1 -> get_next_item_from_enumerator_list1 [label="Yes"];
+  has_list_enumerator_more_items_list1 -> read_items_from_storage_list2 [label="No"];
+  
+  // get_next_item_from_enumerator_list1
+  get_next_item_from_enumerator_list1 -> variable_item;
+  
+  // variable_item
+  variable_item -> call_flow_add_item;
+  
+  // call_flow_add_item
+  call_flow_add_item -> write_items_to_storage_list;
+  
+  // read_items_from_storage_list2
+  read_items_from_storage_list2 -> create_list_enumerator_list2;
+  
+  // create_list_enumerator_list2
+  create_list_enumerator_list2 -> has_list_enumerator_more_items_list2;
+  
+  // has_list_enumerator_more_items_list2
+  has_list_enumerator_more_items_list2 -> get_next_item_from_enumerator_list2 [label="Yes"];
+  has_list_enumerator_more_items_list2 -> write_items_to_storage_list [label="No"];
+  
+  // get_next_item_from_enumerator_list2
+  get_next_item_from_enumerator_list2 -> variable_item;
+  
+  // write_items_to_storage_list
+  write_items_to_storage_list -> has_list_enumerator_more_items_list1;
+  
+  // end
+  has_list_enumerator_more_items_list1 -> end_list;
+  
+  start [shape=Mdiamond, label="Start"];
+  read_items_from_storage_list1 [shape=box, label="Read items from storage (list1)"];
+  create_list_enumerator_list1 [shape=box, label="Create list enumerator (list1)"];
+  has_list_enumerator_more_items_list1 [shape=diamond, label="Has list enumerator more items?"];
+  get_next_item_from_enumerator_list1 [shape=box, label="Get next item from enumerator (list1)"];
+  variable_item [shape=box, label="Variable: item"];
+  call_flow_add_item [shape=box, label="Call flow: add item"];
+  read_items_from_storage_list2 [shape=box, label="Read items from storage (list2)"];
+  create_list_enumerator_list2 [shape=box, label="Create list enumerator (list2)"];
+  has_list_enumerator_more_items_list2 [shape=diamond, label="Has list enumerator more items?"];
+  get_next_item_from_enumerator_list2 [shape=box, label="Get next item from enumerator (list2)"];
+  write_items_to_storage_list [shape=box, label="Write items to storage (list1)"];
+  end_list [shape=Msquare, label="End"];
+
+}

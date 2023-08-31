@@ -1,0 +1,41 @@
+digraph G {
+
+  // start
+  start -> read_items_from_storage_list;
+  
+  // read_items_from_storage_list
+  read_items_from_storage_list -> create_list_enumerator_list;
+  
+  // create_list_enumerator_list
+  create_list_enumerator_list -> has_list_enumerator_more_items_list;
+  
+  // has_list_enumerator_more_items_list
+  has_list_enumerator_more_items_list -> get_next_item_from_enumerator_list [label="Yes"];
+  has_list_enumerator_more_items_list -> write_items_to_storage_list [label="No"];
+  
+  // get_next_item_from_enumerator_list
+  get_next_item_from_enumerator_list -> variable_item;
+  
+  // variable_item
+  variable_item -> call_flow_add_item;
+  
+  // call_flow_add_item
+  call_flow_add_item -> write_items_to_storage_list;
+  
+  // write_items_to_storage_list
+  write_items_to_storage_list -> has_list_enumerator_more_items_list;
+  
+  // end
+  has_list_enumerator_more_items_list -> end_list;
+  
+  start [shape=Mdiamond, label="Start"];
+  read_items_from_storage_list [shape=box, label="Read items from storage (list)"];
+  create_list_enumerator_list [shape=box, label="Create list enumerator (list)"];
+  has_list_enumerator_more_items_list [shape=diamond, label="Has list enumerator more items?"];
+  get_next_item_from_enumerator_list [shape=box, label="Get next item from enumerator (list)"];
+  variable_item [shape=box, label="Variable: item"];
+  call_flow_add_item [shape=box, label="Call flow: add item"];
+  write_items_to_storage_list [shape=box, label="Write items to storage (list)"];
+  end_list [shape=Msquare, label="End"];
+
+}

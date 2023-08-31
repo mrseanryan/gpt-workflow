@@ -1,0 +1,32 @@
+digraph G {
+
+  // start
+  start -> read_items_from_storage_list;
+  
+  // read_items_from_storage_list
+  read_items_from_storage_list -> create_list_enumerator_list;
+  
+  // create_list_enumerator_list
+  create_list_enumerator_list -> has_list_enumerator_more_items_list;
+  
+  // has_list_enumerator_more_items_list
+  has_list_enumerator_more_items_list -> decision_has_more_items_list;
+  
+  // decision_has_more_items_list
+  decision_has_more_items_list -> get_next_item_from_enumerator_list [label="Yes"];
+  decision_has_more_items_list -> end [label="No"];
+  
+  // get_next_item_from_enumerator_list
+  get_next_item_from_enumerator_list -> perform_action_on_item_list;
+  perform_action_on_item_list -> has_list_enumerator_more_items_list;
+  
+  // end
+  end [shape=Msquare];
+  
+  read_items_from_storage_list [shape=Mdiamond, label="Read items from storage (list)"];
+  create_list_enumerator_list [shape=Mdiamond, label="Create list enumerator (list)"];
+  has_list_enumerator_more_items_list [shape=Mdiamond, label="Has list enumerator more items?"];
+  decision_has_more_items_list [shape=Mdiamond, label="Has more items?"];
+  get_next_item_from_enumerator_list [shape=Mdiamond, label="Get next item from enumerator (list)"];
+  perform_action_on_item_list [shape=Mdiamond, label="Perform action on item (list)"];
+}

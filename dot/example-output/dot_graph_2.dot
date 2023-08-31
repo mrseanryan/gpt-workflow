@@ -1,0 +1,34 @@
+digraph G {
+
+  // start
+  start [shape=ellipse, label="Start"];
+  start -> decision_credit_score;
+
+  // decision_credit_score
+  decision_credit_score [shape=Mdiamond, label="Good credit score?"];
+  decision_credit_score -> decision_income;
+
+  // decision_income
+  decision_income [shape=Mdiamond, label="Income >= $100,000?"];
+  decision_income -> decision_employment;
+
+  // decision_employment
+  decision_employment [shape=Mdiamond, label="Employed >= 3 years?"];
+  decision_employment -> decision_down_payment;
+
+  // decision_down_payment
+  decision_down_payment [shape=Mdiamond, label="Down payment >= 10%?"];
+  decision_down_payment -> decision_criminal_record;
+
+  // decision_criminal_record
+  decision_criminal_record [shape=Mdiamond, label="No criminal record in last 5 years?"];
+  decision_criminal_record -> end_approval;
+  decision_criminal_record -> end_rejection;
+
+  // end_approval
+  end_approval [shape=ellipse, label="Approved"];
+  
+  // end_rejection
+  end_rejection [shape=ellipse, label="Rejected"];
+
+}

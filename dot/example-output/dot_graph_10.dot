@@ -1,0 +1,40 @@
+digraph G {
+
+  // start
+  start -> read_items_from_storage_Orders;
+
+  // read_items_from_storage_Orders
+  read_items_from_storage_Orders -> create_list_enumerator_Orders;
+
+  // create_list_enumerator_Orders
+  create_list_enumerator_Orders -> has_list_enumerator_more_items_Orders;
+
+  // has_list_enumerator_more_items_Orders
+  has_list_enumerator_more_items_Orders -> get_next_item_from_enumerator_Orders [label="Yes"];
+  has_list_enumerator_more_items_Orders -> write_items_to_storage_TotalAmount [label="No"];
+
+  // get_next_item_from_enumerator_Orders
+  get_next_item_from_enumerator_Orders -> variable_Order;
+
+  // variable_Order
+  variable_Order -> calculate_total_amount;
+
+  // calculate_total_amount
+  calculate_total_amount -> variable_TotalAmount;
+
+  // variable_TotalAmount
+  variable_TotalAmount -> has_list_enumerator_more_items_Orders;
+
+  // write_items_to_storage_TotalAmount
+  write_items_to_storage_TotalAmount -> end;
+
+  read_items_from_storage_Orders [shape=Mdiamond, label="Read Orders from storage"];
+  create_list_enumerator_Orders [shape=Mdiamond, label="Create Orders enumerator"];
+  has_list_enumerator_more_items_Orders [shape=Mdiamond, label="Are there more Orders?"];
+  get_next_item_from_enumerator_Orders [shape=Mdiamond, label="Get next Order"];
+  variable_Order [shape=Mdiamond, label="Order"];
+  calculate_total_amount [shape=Mdiamond, label="Calculate total amount"];
+  variable_TotalAmount [shape=Mdiamond, label="Total Amount"];
+  write_items_to_storage_TotalAmount [shape=Mdiamond, label="Write Total Amount to storage"];
+  end [shape=Msquare, label="End"];
+}

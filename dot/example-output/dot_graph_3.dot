@@ -1,0 +1,34 @@
+digraph G {
+
+  // start
+  start [shape=ellipse, label="Start"];
+  start -> decision_experience;
+
+  // decision_experience
+  decision_experience [shape=Mdiamond, label="Has relevant experience?"];
+  decision_experience -> decision_education;
+
+  // decision_education
+  decision_education [shape=Mdiamond, label="Has required education?"];
+  decision_education -> decision_skills;
+
+  // decision_skills
+  decision_skills [shape=Mdiamond, label="Has necessary skills?"];
+  decision_skills -> decision_references;
+
+  // decision_references
+  decision_references [shape=Mdiamond, label="Has positive references?"];
+  decision_references -> decision_availability;
+
+  // decision_availability
+  decision_availability [shape=Mdiamond, label="Available for interview?"];
+  decision_availability -> end_recommend;
+  decision_availability -> end_not_recommend;
+
+  // end_recommend
+  end_recommend [shape=ellipse, label="Recommend for interview"];
+  
+  // end_not_recommend
+  end_not_recommend [shape=ellipse, label="Do not recommend for interview"];
+
+}
