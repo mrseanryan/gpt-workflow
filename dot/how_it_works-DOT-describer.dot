@@ -25,7 +25,6 @@ digraph G {
     core
     rsp_parser
     
-    dot_creator_prompt -> system_prompts
     dot_describer_prompt -> system_prompts
   }
 

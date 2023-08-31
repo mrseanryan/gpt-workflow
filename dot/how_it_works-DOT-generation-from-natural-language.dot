@@ -30,11 +30,12 @@ digraph G {
   subgraph cluster_2 {
     color=blue
     label = "gpt-workflow";
-        
-    prompts
+
     core
     service_dot_parser
 
+    dot_describer_prompt -> system_prompts
+    dot_creator_prompt -> system_prompts
   }
 
   subgraph cluster_3 {
@@ -53,7 +54,7 @@ digraph G {
 
     User_In -> Application_In[label="natural language description of a workflow"]
     
-    prompts -> core [xlabel="system prompts: DOT creator + DOT describer"]
+    system_prompts -> core [xlabel="system prompts"]
 
     Application_In -> core [label="natural language description of a workflow"]
     
