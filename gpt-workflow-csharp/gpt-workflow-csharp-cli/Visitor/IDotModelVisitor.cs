@@ -27,4 +27,4 @@ public enum NodeKind
 
 public record Node(NodeKind Kind, string Identifier);
 
-public record Edge(Node Start, Node End);
+public record Edge(Node Start, Node End, string Label = "");
