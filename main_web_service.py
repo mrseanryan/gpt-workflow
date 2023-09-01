@@ -1,4 +1,5 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
+import traceback
 from urllib.parse import urlparse, parse_qs
 import urllib
 import threading, socket
@@ -29,6 +30,7 @@ class MyServer(BaseHTTPRequestHandler):
             content = routes[path]()
         except Exception as error:
             print("!! error: ", error)
+            traceback.print_exc() # print stack trace
             response = 404
             content = "{ 'error': 'Oops! Not Found' }"
 
@@ -44,17 +46,28 @@ class MyServer(BaseHTTPRequestHandler):
         user_prompt = self.parse_query_param("p")
         user_prompt_wrapped = GetPromptToDescribeWorkflow(user_prompt)
         command_messages = core.create_command_messages([getExpertCommandToDescribeDot()])
+        if config_web.discard_previous_messages:
+            previous_messages = []
         rsp = core.execute_prompt(user_prompt_wrapped, previous_messages, command_messages, prompt_id)
         prompt_id += 1
         return rsp
 
     def bot_generate_dot(self):
         global prompt_id
+        DELIMITER = "======"
+        EMPTY_DOT = "digraph G{}"
         user_prompt = self.parse_query_param("p")
         command_messages = core.create_command_messages([getExpertCommandToCreateDot()])
+        if config_web.discard_previous_messages:
+            previous_messages = []
         rsp = core.execute_prompt(user_prompt, previous_messages, command_messages, prompt_id)
         prompt_id += 1
-        return rsp["human_output"] + "\n\n======\n\n" + rsp["dot"]
+        if "human_output" in rsp:
+            return rsp["human_output"] + f"\n\n{DELIMITER}\n\n" + rsp["dot"]
+        else:
+            print("!! error rsp? - cannot parse")
+            print(rsp)
+            return f"{rsp}\n\n{DELIMITER}\n\n{EMPTY_DOT}"
 
     def parse_path(self):
         return urlparse(self.path).path
