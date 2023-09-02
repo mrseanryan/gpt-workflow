@@ -2,7 +2,6 @@ namespace Parser;
 
 using Visitor;
 using DotLang.CodeAnalysis.Syntax;
-using System;
 
 public class DotParser
 {
@@ -16,8 +15,11 @@ public class DotParser
 // ref: https://github.com/abock/dotlang/blob/master/src/DotLang/CodeAnalysis/Syntax/SyntaxVisitor.cs
 class DotVisitor : SyntaxVisitor
 {
-    const string UNKOWN = "(unknown)";
+    const string UNKOWN = "unknown";
     readonly IDotModelVisitor visitor;
+
+    // The AST visitor seems to visit same nodes multiple times. This visitor suppresses the duplicate visits.
+    readonly VisitedStringTracker visited = new VisitedStringTracker();
 
     public DotVisitor(IDotModelVisitor visitor)
     {
@@ -26,30 +28,25 @@ class DotVisitor : SyntaxVisitor
 
     // Assumption: only Nodes will have labels
     // TODO: support Edges with labels, if needed
-    Node? previousNode = null;
 
-    public override bool VisitNodeIdentifierSyntax(NodeIdentifierSyntax nodeIdentifier, VisitKind visitKind)
+    public override bool VisitNodeStatementSyntax(NodeStatementSyntax nodeStatement, VisitKind visitKind)
     {
-        var identifier = IdentifierFrom(nodeIdentifier.IdentifierToken);
+        var identifier = IdentifierFrom(nodeStatement.Identifier.IdentifierToken);
+        var kind = NodeKindFrom(nodeStatement.Identifier.IdentifierToken.ToString());
 
-        var node = new Node(NodeKindFrom(nodeIdentifier.IdentifierToken.ToString()), identifier);
-        visitor.VisitNode(node);
-
-        if (node.Kind != NodeKind.Comment)
-            previousNode = node;
-
-        return true;
-    }
-
-    public override bool VisitAttributeSyntax(AttributeSyntax attribute, VisitKind visitKind)
-    {
-        if (previousNode != null && attribute.NameToken.ToString().Trim() == "label")
+        var node = new Node(kind, identifier);
+        if (!visited.WasVisited(node.ToString()))
         {
-            var label = attribute.ValueToken.StringValue;
-            if (!string.IsNullOrEmpty(label))
-                visitor.VisitNodeLabel(previousNode, label);
+            visitor.VisitNode(node);
         }
 
+        var labelAttribute = nodeStatement.Attributes?.FirstOrDefault(a => a.NameToken.StringValue?.Trim() == "label");
+        if (labelAttribute != null)
+        {
+            var label = labelAttribute.ValueToken.StringValue;
+            if (!string.IsNullOrEmpty(label))
+                visitor.VisitNodeLabel(node, label);
+        }
         return true;
     }
 
@@ -58,8 +55,16 @@ class DotVisitor : SyntaxVisitor
         if (string.IsNullOrEmpty(identifier))
             return NodeKind.Other;
         identifier = identifier.Trim();
-        if (IsComment(identifier))
+        if (IsComment(identifier)) {
+            // handle comment like this: (seems to be bug in the parser - else the label gets lost!)
+            //    // decision_down_payment
+            //    decision_down_payment [shape=diamond, label="Down Payment > 20%?"];
+            var commentedKind = NodeKindFrom(DeComment(identifier));
+            if (commentedKind != NodeKind.Other)
+                return commentedKind;
+
             return NodeKind.Comment;
+        }
 
         var parts = identifier.Split("_")
             .Select(p => p.Trim());
@@ -80,6 +85,16 @@ class DotVisitor : SyntaxVisitor
 
     bool IsComment(string identifier) => identifier.Trim().StartsWith("//") || identifier.Trim().StartsWith("#");
 
+    string DeComment(string identifier)
+    {
+        identifier = identifier.Trim();
+        if (identifier.StartsWith("//"))
+            return identifier.Substring(2);
+        if (identifier.StartsWith("#"))
+            return identifier.Substring(1);
+        return identifier;
+    }
+
     public override bool VisitEdgeStatementSyntax(EdgeStatementSyntax edgeStatement, VisitKind visitKind)
     {
         var leftId = IdentifierFrom(edgeStatement.Left);
@@ -87,11 +102,14 @@ class DotVisitor : SyntaxVisitor
 
         var left = new Node(NodeKindFrom(ToStringOrUnknown(edgeStatement.Left)), leftId);
         var right = new Node(NodeKindFrom(ToStringOrUnknown(edgeStatement.Right)), rightId);
-        visitor.VisitEdge(new Edge(left, right));
+
+        var edge = new Edge(left, right);
+        if (!visited.WasVisited(edge.ToString()))
+            visitor.VisitEdge(edge);
         return true;
     }
 
-    string ToStringOrUnknown(IEdgeVertexStatementSyntax edge) => edge.ToString() ?? UNKOWN;
+    string ToStringOrUnknown(IEdgeVertexStatementSyntax edge) => edge.ToString()?.Replace(";", "") ?? UNKOWN;
 
     string IdentifierFrom(IEdgeVertexStatementSyntax edgeVertex) => IdentifierFrom(ToStringOrUnknown(edgeVertex));
     string IdentifierFrom(SyntaxToken identifierToken) => IdentifierFrom(identifierToken?.StringValue ?? UNKOWN);

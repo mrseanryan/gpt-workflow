@@ -1,7 +1,7 @@
 namespace Visitor;
 
 // Default example implementation of IDotModelVisitor
-public class ConsoleDumpDotModelVisitor : DeDuplicatingDotModelVisitor
+public class ConsoleDumpDotModelVisitor : BaseDotModelVisitor
 {
     protected override void VisitEdgeImplementation(Edge edge)
     {

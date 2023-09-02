@@ -1,0 +1,48 @@
+digraph G {
+
+  // start
+  start [shape=ellipse, label="Start"];
+
+  // decision_budget
+  start -> decision_budget;
+  decision_budget [shape=diamond, label="Budget?"];
+
+  // decision_budget_yes
+  decision_budget -> decision_budget_yes [label="Yes"];
+  decision_budget_yes [shape=diamond, label="High budget?"];
+
+  // decision_budget_no
+  decision_budget -> decision_budget_no [label="No"];
+  decision_budget_no [shape=diamond, label="Low budget?"];
+
+  // decision_budget_yes -> end_high_budget
+  decision_budget_yes -> end_high_budget [label="Yes"];
+  end_high_budget [shape=box, label="Choose high-end brand"];
+
+  // decision_budget_yes -> end_mid_budget
+  decision_budget_yes -> end_mid_budget [label="No"];
+  end_mid_budget [shape=box, label="Choose mid-range brand"];
+
+  // decision_budget_no -> end_low_budget
+  decision_budget_no -> end_low_budget [label="Yes"];
+  end_low_budget [shape=box, label="Choose low-cost brand"];
+
+  // decision_budget_no -> decision_features
+  decision_budget_no -> decision_features [label="No"];
+  decision_features [shape=diamond, label="Specific features?"];
+
+  // decision_features -> end_specific_features
+  decision_features -> end_specific_features [label="Yes"];
+  end_specific_features [shape=box, label="Choose brand with specific features"];
+
+  // decision_features -> end_general_features
+  decision_features -> end_general_features [label="No"];
+  end_general_features [shape=box, label="Choose brand with general features"];
+
+  // end
+  end_high_budget [shape=ellipse, label="End"];
+  end_mid_budget [shape=ellipse, label="End"];
+  end_low_budget [shape=ellipse, label="End"];
+  end_specific_features [shape=ellipse, label="End"];
+  end_general_features [shape=ellipse, label="End"];
+}

@@ -65,6 +65,8 @@ switch (args.Length)
 string CreateExampleDot()
 {
     var builder = new DotBuilder();
+    builder.SetId("Decide Job Applicant");
+    builder.SetLabel("Decide Job Applicant"); // intentionally NOT much detail, else helping AI too much
     var start = builder.AddNode(NodeKind.Start);
     var decideExperience = builder.AddNode(NodeKind.Decision, "Experience");
     var decideEducation = builder.AddNode(NodeKind.Decision, "Education");

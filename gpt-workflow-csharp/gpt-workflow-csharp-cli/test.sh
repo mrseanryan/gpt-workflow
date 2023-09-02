@@ -6,6 +6,14 @@ echo "Test parsing DOT"
 ./go.sh parse ../../dot/example-output/dot_graph_1.dot
 
 echo .
+echo "Test parsing DOT"
+./go.sh parse ../../dot/example-output/dot_graph_11.dot
+
+echo .
+echo "Test parsing DOT"
+./go.sh parse ../../dot/example-output/dot_graph_12.dot
+
+echo .
 echo "Test building DOT"
 ./go.sh create-example-dot
 

@@ -1,0 +1,29 @@
+digraph G {
+  // start
+  start [shape=ellipse, label="Start"];
+  start -> decision_credit_score;
+
+  // decision_credit_score
+  decision_credit_score [shape=diamond, label="Credit Score > 700?"];
+  decision_credit_score -> decision_income;
+
+  // decision_income
+  decision_income [shape=diamond, label="Income > $50,000?"];
+  decision_income -> decision_down_payment;
+
+  // decision_down_payment
+  decision_down_payment [shape=diamond, label="Down Payment > 20%?"];
+  decision_down_payment -> end_approved;
+  decision_down_payment -> end_rejected;
+
+  // end_approved
+  end_approved [shape=ellipse, label="Approved"];
+  end_approved -> end;
+
+  end_rejected [shape=ellipse, label="Rejected"];
+  end_rejected -> end;
+
+  // end
+  end [shape=ellipse, label="End"];
+
+}

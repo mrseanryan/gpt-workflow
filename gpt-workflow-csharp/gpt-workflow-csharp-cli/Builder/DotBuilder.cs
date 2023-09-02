@@ -5,6 +5,8 @@ namespace Builder;
 
 public class DotBuilder
 {
+    string identifier = "G"; // the identifier of the overall graph
+    string label = ""; // the label of the overall graph
     int next_id = 1;
     readonly List<Edge> edges = new();
     readonly List<Node> nodes = new();
@@ -27,10 +29,23 @@ public class DotBuilder
         return edge;
     }
 
+    public void SetId(string identifier)
+    {
+        this.identifier = identifier.Replace(" ", "_").Replace("-", "_");
+    }
+
+    public void SetLabel(string label)
+    {
+        this.label = label;
+    }
+
     public string Build()
     {
         var sb = new StringBuilder();
-        sb.AppendLine("digraph G {");
+        sb.AppendLine($"digraph {identifier} {{");
+
+        if (!string.IsNullOrEmpty(label))
+            sb.AppendLine($" label=\"{label}\"");
 
         foreach(var node in nodes)
             sb.AppendLine($"  {GetNodeAsDot(node)}[shape={GetShape(node)}, label=\"{node.Identifier}\" ];");

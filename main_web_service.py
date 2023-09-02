@@ -44,6 +44,7 @@ class MyServer(BaseHTTPRequestHandler):
     def bot_describe_dot(self):
         global prompt_id
         user_prompt = self.parse_query_param("p")
+        print(f"  {user_prompt}")
         user_prompt_wrapped = GetPromptToDescribeWorkflow(user_prompt)
         command_messages = core.create_command_messages([getExpertCommandToDescribeDot()])
         if config_web.discard_previous_messages:
@@ -57,6 +58,7 @@ class MyServer(BaseHTTPRequestHandler):
         DELIMITER = "======"
         EMPTY_DOT = "digraph G{}"
         user_prompt = self.parse_query_param("p")
+        print(f"  {user_prompt}")
         command_messages = core.create_command_messages([getExpertCommandToCreateDot()])
         if config_web.discard_previous_messages:
             previous_messages = []
@@ -142,7 +144,7 @@ def start_multi_threaded():
     print(f"- describe DOT example: http://{config_web.HOSTNAME}:{config_web.PORT}/describe-dot?p={escaped_dot}");
     print("[press any key to stop]")
     [Thread(i) for i in range(config_web.WEB_SERVER_THREADS)]
-    input("Press ENTER to kill server")
+    input("Press ENTER to kill server\n")
 
     print("Server stopped.")
 
