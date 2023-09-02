@@ -2,14 +2,25 @@ namespace Parser;
 
 using Visitor;
 using DotLang.CodeAnalysis.Syntax;
+using System;
 
 public class DotParser
 {
     public void Parse(string dot, IDotModelVisitor visitor)
     {
+        dot = RemoveComments(dot);
         var syntaxTree = new Parser(dot).Parse();
         syntaxTree.Accept(new DotVisitor(visitor));
     }
+
+    string RemoveComments(string dot)
+    {
+        // Unfortunately, comments in the DOT mess up the parsing - seems bug in Nuget package.
+        var lines = dot.Replace("\r", "").Split("\n");
+        return string.Join("\n", lines.Where(l => !IsComment(l)));
+    }
+
+    bool IsComment(string line) => line.Trim().StartsWith("//") || line.Trim().StartsWith("#");
 }
 
 // ref: https://github.com/abock/dotlang/blob/master/src/DotLang/CodeAnalysis/Syntax/SyntaxVisitor.cs
@@ -97,11 +108,20 @@ class DotVisitor : SyntaxVisitor
 
     public override bool VisitEdgeStatementSyntax(EdgeStatementSyntax edgeStatement, VisitKind visitKind)
     {
+        // bug in parser?
+        // Can get an edgeStatement like this: - messed up due to comments in DOT. For now, can filter out comment lines.
+        /*
+        // decision_features -> end_general_features
+        decision_features -> end_general_features [label="No"]; 
+        */
+
         var leftId = IdentifierFrom(edgeStatement.Left);
         var rightId = IdentifierFrom(edgeStatement.Right);
 
         var left = new Node(NodeKindFrom(ToStringOrUnknown(edgeStatement.Left)), leftId);
         var right = new Node(NodeKindFrom(ToStringOrUnknown(edgeStatement.Right)), rightId);
+
+        // TODO try to parse label attribute
 
         var edge = new Edge(left, right);
         if (!visited.WasVisited(edge.ToString()))
@@ -117,8 +137,11 @@ class DotVisitor : SyntaxVisitor
     {
         if (string.IsNullOrEmpty(identifier))
             return UNKOWN;
-        var parts = identifier.Split("_")
-            .Select(p => p.Trim());
+
+        var parts = identifier.Split("[");
+        parts = parts[0].Split("_")
+            .Select(p => p.Trim())
+            .ToArray();
         if (parts.Count() == 1)
             return parts.First();
 
