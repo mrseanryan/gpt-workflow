@@ -1,0 +1,57 @@
+digraph G {
+    graph [
+        label = "Describing/Explaining a Workflow via DOT format [simplified]"
+        labelloc = t
+
+        //dpi = 200
+        ranksep=0.65
+        nodesep=0.40
+        rankdir=TB
+
+        len=0
+    ]
+
+  subgraph cluster_0 {
+    label = "User";
+
+    User_In
+    User_Out
+  }
+
+  subgraph cluster_1 {
+    color=blue
+    label = "gpt-workflow";
+
+    core
+    rsp_parser
+    system_prompts
+  }
+
+  subgraph cluster_2 {
+    label = "LLM";
+
+    LLM_In
+    LLM_Out
+  }
+
+  subgraph cluster_3 {
+    label = "Application";
+
+    Application_In
+    Application_Out
+  }
+
+    User_In -> Application_In [label="Describe this workflow"]
+    
+    Application_In -> core [label="Workflow (Graphviz DOT)"]
+    system_prompts -> core [xlabel="[system prompts]"]
+    
+    core -> LLM_In [label="req[Graphviz DOT][system prompts]"]
+    
+    LLM_In -> LLM_Out
+    
+    LLM_Out -> rsp_parser [label="rsp[summary]"]
+
+    rsp_parser -> Application_Out
+    Application_Out -> User_Out [label="[summary]"]
+}
