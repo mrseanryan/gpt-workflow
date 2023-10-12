@@ -35,7 +35,15 @@ go.bat
 - output: prompt sent to LLM, and its response:
 
 ```
-xxx
+```
+digraph {
+  rankdir=LR
+  node [shape=box]
+  start_ [label="start"]
+  decision_credit_score [label="credit score > 700"]
+  decision_years_employed [label="years employed > 3"]
+  end_approved [label="approved"]
+  end_rejected [label="
 ```
 
 When done, deactivate the Python environment:
