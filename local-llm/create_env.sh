@@ -1,3 +1,4 @@
-py -m venv env
+python3 -m venv env
 
-./env/Scripts/activate
+chmod +x ./env/bin/*
+./env/bin/activate

@@ -4,7 +4,7 @@ Self-Hosting an LLM (`Code Llama 13B`), rather than using an Open-AI service.
 
 ref - https://huggingface.co/codellama/CodeLlama-13b-hf
 
-## Usage on Windows - Quick start
+## Usage on Windows - Quick start (for Unix, use the .sh scripts)
 
 Open a command prompt.
 
