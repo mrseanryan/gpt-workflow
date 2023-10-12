@@ -35,7 +35,7 @@ go.bat
 - output: prompt sent to LLM, and its response:
 
 ```
-```
+``` //`begin delimiter
 digraph {
   rankdir=LR
   node [shape=box]
@@ -44,6 +44,7 @@ digraph {
   decision_years_employed [label="years employed > 3"]
   end_approved [label="approved"]
   end_rejected [label="
+  ``` //` end delimiter
 ```
 
 When done, deactivate the Python environment:
