@@ -5,9 +5,9 @@ from ctransformers import AutoModelForCausalLM
 # ref https://huggingface.co/TheBloke/CodeLlama-13B-GGUF
 # ref https://www.youtube.com/watch?v=rZz5AORu8zE
 def load_llm():
-    llm = AutoModelForCausalLM.from_pretrained("TheBloke/CodeLlama-13B-GGUF", model_file="codellama-13b.q4_K_M.gguf", model_type="llama",
+    llm = AutoModelForCausalLM.from_pretrained("TheBloke/CodeLlama-13B-GGUF", model_file="codellama-13b.q3_K_M.gguf", model_type="llama",
         # gpu_layers=50,
-        # max_new_tokens = 1096,
+        max_new_tokens = 4096, # 1096
         # repetition_penalty = 1.13,
         # temperature = 0.5
         )
@@ -19,7 +19,7 @@ def llm_function(message, chat_history):
     output_texts = response
     return output_texts
 
-title = "CodeLlama 13B GGUF Demo"
+title = "CodeLlama 13B GGUF (quanized) Demo"
 
 examples = [
  """

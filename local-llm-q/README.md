@@ -1,5 +1,11 @@
 # Local LLM - Quantized for less RAM
 
+## References
+
+https://huggingface.co/TheBloke/CodeLlama-13B-GGUF
+
+https://www.youtube.com/watch?v=rZz5AORu8zE
+
 ## Usage on Windows - Quick start (for Unix, use the .sh scripts)
 
 Open a command prompt.
