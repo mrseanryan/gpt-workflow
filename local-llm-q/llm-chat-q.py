@@ -45,7 +45,28 @@ def llm_function(message, chat_history):
 title = "CodeLlama 13B GGUF (quantized) Demo"
 
 examples = [
- """
+# best DOT prompt with the quantized model MODEL_FILE__CODELLAMA_13B__Q3_K_M
+"""
+create a DOT graph to decide a mortgage loan.
+if credit score is greater than 700 then check years employed. else reject.
+if years employed is greater than 3 then approve. else reject.
+
+digraph G {
+""",
+# This prompt works better, just with the separate lines!
+"""
+create a DOT graph to decide a mortgage loan.
+if credit score is greater than 700 then check years employed. else reject.
+if years employed is greater than 3 then approve. else reject.
+
+DOT:
+""",
+"""
+create a DOT graph to decide a mortgage loan. if credit score is greater than 700 then check years employed. else reject.
+
+DOT:
+""",
+"""
 create a DOT graph to decide a mortgage loan. if credit score is greater than 700 then check years employed. else reject.
 
 if years employed is greater than 3 then approve.
