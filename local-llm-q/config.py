@@ -13,7 +13,7 @@ MAX_NEW_TOKENS = MODEL_FILE__CODELLAMA_13B__Q3_K_M__MAX_TOKENS #4096, 1096
 
 MODEL_TYPE = "llama"
 
-GPU_LAYERS = 0 # 0 means 'no GPU' - if GPU try 50 or less - then probably need ctransformers[cuda] instead of ctransformers
+GPU_LAYERS = 50 # 0 means 'no GPU' - if GPU try 50 or less - then probably need ctransformers[cuda] instead of ctransformers
 
 REPETITION_PENALTY = 1.13
 TEMPERATURE = 0.5

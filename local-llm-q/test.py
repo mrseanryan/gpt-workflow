@@ -1,9 +1,12 @@
 from ctransformers import AutoModelForCausalLM
 
 import config
+import util_time
 
 prompt = "AI is going to"
 print(prompt)
+
+start = util_time.start_timer()
 
 # Set gpu_layers to the number of layers to offload to GPU. Set to 0 if no GPU acceleration is available on your system.
 llm = AutoModelForCausalLM.from_pretrained(
@@ -17,3 +20,6 @@ llm = AutoModelForCausalLM.from_pretrained(
         )
 
 print(llm(prompt))
+
+time_elapsed = util_time.end_timer(start)
+print(f"Time taken: {util_time.describe_elapsed_seconds(time_elapsed)}")
