@@ -58,3 +58,35 @@ where python
 ```
 
 - output: should output the usual location of Python
+
+## Results
+
+### Model: codellama-13b.Q5_K_M.gguf
+
+- REPETITION_PENALTY = 1 (default)
+- TEMPERATURE = 0.5
+
+Prompt :
+
+```
+create a DOT graph to decide a mortgage loan.
+if credit score is greater than 700 then check years employed. else reject.
+if years employed is greater than 3 then approve. else reject.
+
+digraph G {
+```
+
+Response:
+
+```
+    rankdir=LR;
+    node [shape=record];
+    credit_score [label="{credit score: 700}"];
+    years_employed [label="{years employed: 5}"];
+    credit_score -> years_employed [label="700 > 700"];
+    years_employed -> approve [label="5 > 3"];
+    years_employed -> reject [label="5 <= 3"];
+    approve [label="approve"];
+    reject [label="reject"];
+}
+```
