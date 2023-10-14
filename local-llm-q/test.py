@@ -8,7 +8,14 @@ def print_config():
 
 print_config()
 
-prompt = "AI is going to"
+#prompt = "AI is going to"
+prompt = """
+create a DOT graph to decide a mortgage loan.
+if credit score is greater than 700 then check years employed. else reject.
+if years employed is greater than 3 then approve. else reject.
+
+digraph G {
+"""
 print(f">> {prompt}")
 
 start = util_time.start_timer()
