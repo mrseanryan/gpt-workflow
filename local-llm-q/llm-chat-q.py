@@ -3,6 +3,7 @@ import time
 from ctransformers import AutoModelForCausalLM
 
 import config
+import util_time
 
 # ref https://huggingface.co/TheBloke/CodeLlama-13B-GGUF
 # ref https://www.youtube.com/watch?v=rZz5AORu8zE
@@ -18,11 +19,28 @@ def load_llm():
         )
     return llm
 
+print("Loading LLM...")
+llm = load_llm()
+print("[done]")
+
+def print_config():
+    print(f"GPU layers used: {config.GPU_LAYERS}")
+
+print_config()
+
 def llm_function(message, chat_history):
-    llm = load_llm()
+    global llm
+
+    print(f">> {message}")
+    start = util_time.start_timer()
+
     response = llm(message)
-    output_texts = response
-    return output_texts
+    print(response)
+
+    time_elapsed = util_time.end_timer(start)
+    print(f"Time taken: {util_time.describe_elapsed_seconds(time_elapsed)}")
+
+    return response
 
 title = "CodeLlama 13B GGUF (quantized) Demo"
 
