@@ -2,14 +2,19 @@ import gradio as gr
 import time
 from ctransformers import AutoModelForCausalLM
 
+import config
+
 # ref https://huggingface.co/TheBloke/CodeLlama-13B-GGUF
 # ref https://www.youtube.com/watch?v=rZz5AORu8zE
 def load_llm():
-    llm = AutoModelForCausalLM.from_pretrained("TheBloke/CodeLlama-13B-GGUF", model_file="codellama-13b.q3_K_M.gguf", model_type="llama",
-        # gpu_layers=50,
-        max_new_tokens = 4096, # 1096
-        # repetition_penalty = 1.13,
-        # temperature = 0.5
+    llm = AutoModelForCausalLM.from_pretrained(
+        config.HF_PROJECT,
+        model_file=config.ACTIVE_MODEL_FILE,
+        model_type=config.MODEL_TYPE,
+        gpu_layers=config.GPU_LAYERS,
+        max_new_tokens = config.MAX_NEW_TOKENS,
+        repetition_penalty = config.REPETITION_PENALTY,
+        temperature = config.TEMPERATURE
         )
     return llm
 
@@ -19,7 +24,7 @@ def llm_function(message, chat_history):
     output_texts = response
     return output_texts
 
-title = "CodeLlama 13B GGUF (quanized) Demo"
+title = "CodeLlama 13B GGUF (quantized) Demo"
 
 examples = [
  """
@@ -58,7 +63,8 @@ digraph {
 'Write a python code to connect with a SQL database and list down all the tables.',
 'Write the python code to train a linear regression model using scikit learn.',
 'Write the code to implement a binary tree implementation in C language.',
-'What are the benefits of the python programming language?'
+'What are the benefits of the python programming language?',
+'AI is going to'
 ]
 
 gr.ChatInterface(
