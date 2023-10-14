@@ -67,6 +67,8 @@ digraph {
 'AI is going to'
 ]
 
+print(f"Hosting local LLM - you do NOT need to be logged in to HF")
+
 gr.ChatInterface(
     fn = llm_function,
     title=title,
