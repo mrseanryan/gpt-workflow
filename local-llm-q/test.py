@@ -3,8 +3,13 @@ from ctransformers import AutoModelForCausalLM
 import config
 import util_time
 
+def print_config():
+    print(f"GPU layers used: {config.GPU_LAYERS}")
+
+print_config()
+
 prompt = "AI is going to"
-print(prompt)
+print(f">> {prompt}")
 
 start = util_time.start_timer()
 
@@ -20,6 +25,8 @@ llm = AutoModelForCausalLM.from_pretrained(
         )
 
 print(llm(prompt))
+
+print_config()
 
 time_elapsed = util_time.end_timer(start)
 print(f"Time taken: {util_time.describe_elapsed_seconds(time_elapsed)}")
